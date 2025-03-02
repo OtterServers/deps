@@ -28,24 +28,20 @@ LABEL org.opencontainers.image.source="https://github.com/OtterServers/deps"
 LABEL org.opencontainers.image.licenses=MIT
 
 # Install Deps needed to install Bun
-RUN apk add --update --no-cache gcc libstdc++ libgcc ca-certificates curl git jq wget bash
+RUN apk add --update --no-cache gcc libstdc++ libgcc ca-certificates curl git jq wget bash nano sudo
 
 SHELL ["/bin/bash", "-c"]
 
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash
+RUN cp ~/.bun/bin/bun /bin/bun
 
 # Verify Bun Install
-RUN ~/.bun/bin/bun --version
+RUN bun --version
 
-RUN echo '#!/bin/bash' > /usr/local/bin/entrypoint.sh && \
-    echo '' >> /usr/local/bin/entrypoint.sh && \
-    echo '# Check if the argument is the install.sh file' >> /usr/local/bin/entrypoint.sh && \
-    echo 'if [ "$1" == "/mnt/install/install.sh" ]; then' >> /usr/local/bin/entrypoint.sh && \
-    echo '    # If it is, run the file through bun' >> /usr/local/bin/entrypoint.sh && \
-    echo '    cat "$1" | ~/.bun/bin/bun run -' >> /usr/local/bin/entrypoint.sh && \
-    echo 'else' >> /usr/local/bin/entrypoint.sh && \
-    echo '    # If it'\''s not, execute the command as normal' >> /usr/local/bin/entrypoint.sh && \
-    echo '    "$@"' >> /usr/local/bin/entrypoint.sh && \
-    echo 'fi' >> /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Make sure file is saved as bun.ts
+RUN wget -q https://raw.githubusercontent.com/OtterServers/deps/refs/heads/main/langs/bun.ts
+RUN bun build --compile --outfile=bunish bun.ts
+RUN mv bunish /bin/
+
+ENTRYPOINT ["bash"]

@@ -43,5 +43,3 @@ RUN bun --version
 RUN wget -q https://raw.githubusercontent.com/OtterServers/deps/refs/heads/main/langs/bun.ts
 RUN bun build --compile --outfile=bunish bun.ts
 RUN mv bunish /bin/
-
-ENTRYPOINT ["bash"]

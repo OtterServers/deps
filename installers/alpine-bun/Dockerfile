@@ -39,10 +39,13 @@ RUN curl -fsSL https://bun.sh/install | bash
 RUN ~/.bun/bin/bun --version
 
 RUN echo '#!/bin/bash' > /usr/local/bin/entrypoint.sh && \
-    echo 'LAST_ARG="${@: -1}"' >> /usr/local/bin/entrypoint.sh && \
-    echo 'if [ ! -f "$LAST_ARG" ]; then' >> /usr/local/bin/entrypoint.sh && \
-    echo '    echo "Error: File '\''$LAST_ARG'\'' does not exist."' >> /usr/local/bin/entrypoint.sh && \
-    echo '    exit 1' >> /usr/local/bin/entrypoint.sh && \
-    echo 'fi' >> /usr/local/bin/entrypoint.sh && \
-    echo 'cat "$LAST_ARG" | ~/.bun/bin/bun run -' >> /usr/local/bin/entrypoint.sh
+    echo '' >> /usr/local/bin/entrypoint.sh && \
+    echo '# Check if the argument is the install.sh file' >> /usr/local/bin/entrypoint.sh && \
+    echo 'if [ "$1" == "/mnt/install/install.sh" ]; then' >> /usr/local/bin/entrypoint.sh && \
+    echo '    # If it is, run the file through bun' >> /usr/local/bin/entrypoint.sh && \
+    echo '    cat "$1" | ~/.bun/bin/bun run -' >> /usr/local/bin/entrypoint.sh && \
+    echo 'else' >> /usr/local/bin/entrypoint.sh && \
+    echo '    # If it'\''s not, execute the command as normal' >> /usr/local/bin/entrypoint.sh && \
+    echo '    "$@"' >> /usr/local/bin/entrypoint.sh && \
+    echo 'fi' >> /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

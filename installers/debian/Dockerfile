@@ -39,7 +39,15 @@ RUN apt update \
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# Too lazy to understand how to actually use the COPY command in Github Actions
+RUN echo '#!/bin/bash' > /usr/local/bin/entrypoint.sh && \
+    echo 'LAST_ARG="${@: -1}"' >> /usr/local/bin/entrypoint.sh && \
+    echo 'if [ ! -f "$LAST_ARG" ]; then' >> /usr/local/bin/entrypoint.sh && \
+    echo '    echo "Error: File '\''$LAST_ARG'\'' does not exist."' >> /usr/local/bin/entrypoint.sh && \
+    echo '    exit 1' >> /usr/local/bin/entrypoint.sh && \
+    echo 'fi' >> /usr/local/bin/entrypoint.sh && \
+    echo 'cat "$LAST_ARG" | ~/.bun/bin/bun run -' >> /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Test if file runs via bun

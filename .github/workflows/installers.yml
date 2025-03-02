@@ -37,8 +37,8 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
       - uses: docker/build-push-action@v4
         with:
-          context: ./installers/${{ matrix.tag }}
-          file: Dockerfile
+          context: ./installers
+          file: ./installers/${{ matrix.tag }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
@@ -68,8 +68,8 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
       - uses: docker/build-push-action@v4
         with:
-          context: ./installers/${{ matrix.tag }}
-          file: Dockerfile
+          context: ./installers
+          file: ./installers/${{ matrix.tag }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |

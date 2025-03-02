@@ -29,12 +29,13 @@ LABEL org.opencontainers.image.licenses=MIT
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-SHELL ["/bin/bash", "-c"]
-
 # Install dependencies
 RUN apt update \
     && apt upgrade -y \
     && apt -y --no-install-recommends install ca-certificates curl bash unzip
+
+# Use Bash after install deps via apt
+SHELL ["/bin/bash", "-c"]
 
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash

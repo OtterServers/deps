@@ -43,7 +43,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Test if file runs via bun
-COPY install.sh /mnt/install/install.sh
+# COPY install.sh /mnt/install/install.sh
 
 # Verify Bun installation
 RUN ~/.bun/bin/bun --version

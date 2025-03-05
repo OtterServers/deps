@@ -1,6 +1,6 @@
 export type Json = Record<string, any>
 
-export const env = <T = string | undefined>(key: string) => {
+export const env = <T extends string | undefined>(key: string): T => {
     const value = Bun.env[key]
     if (!value) return undefined as T
     return value as T

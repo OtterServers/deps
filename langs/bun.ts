@@ -11,7 +11,7 @@ if (args.length === 0) {
 // Check if the first argument is "/mnt/install/install.sh"
 if (args[0] === "/mnt/install/install.sh") {
     // Run with bun for JavaScript
-    const command = `cat /mnt/install/helpers.ts ${args[0]} | bun run -`
+    const command = `cat /bin/helpers.ts ${args[0]} | bun run -`
     exec(command, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing command: ${error.message}`)

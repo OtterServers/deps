@@ -39,6 +39,9 @@ RUN cp ~/.bun/bin/bun /bin/bun
 # Verify Bun Install
 RUN bun --version
 
+# Install helpers.ts
+RUN wget -q -P /mnt/install https://raw.githubusercontent.com/OtterServers/deps/refs/heads/main/langs/helpers.ts
+
 # Make sure file is saved as bun.ts
 RUN wget -q https://raw.githubusercontent.com/OtterServers/deps/refs/heads/main/langs/bun.ts
 RUN bun build --compile --outfile=bunish bun.ts
